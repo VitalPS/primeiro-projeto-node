@@ -1,5 +1,6 @@
 import { request, response, Router } from 'express';
-import { uuid } from 'uuidv4';
+import Appointment from "../models/appointment"
+
 import { startOfHour, parseISO, isEqual } from 'date-fns';
 // startOfHour -> converte minuto, segundo, milissegundo para zero
 // parseISO -> converte string para formato de data nativo do JS
@@ -7,13 +8,8 @@ import { startOfHour, parseISO, isEqual } from 'date-fns';
 
 const appointmentsRouter = Router();
 
-interface appointment {
-  id: string
-  provider: string;
-  date: Date;
-}
 
-const appointments: appointment[] = []; //appointments é declarado como um array de appointment
+const appointments: Appointment[] = []; //appointments é declarado como um array de appointment
 
 appointmentsRouter.post('/', (request, response) => {
   const { provider, date } = request.body;
@@ -25,14 +21,10 @@ appointmentsRouter.post('/', (request, response) => {
   );
 
   if (findAppointmentIsEqual) {
-    return response.status(400).json({ message: "This appointment is already booked" })
+    return response.status(400).json({ message: "This appointment is already booked" });
   }
 
-  const appointment = {
-    id: uuid(),
-    provider,
-    date: parsedDate,
-  };
+  const appointment = new Appointment(provider, parsedDate);
 
   appointments.push(appointment);
 
