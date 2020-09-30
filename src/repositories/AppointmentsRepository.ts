@@ -2,6 +2,11 @@ import { isEqual } from "date-fns";
 import Appointment from "../models/Appointment"
 import appointmentsRouter from "../routes/appointments.routes";
 
+interface CreateAppointmentDTO {
+  provider: string;
+  date: Date;
+}
+
 class AppointmentsRepository {
   private appointments: Appointment[];
   // private não permite que a classe seja acessível fora da classe AppointmentsRepository
@@ -23,10 +28,10 @@ class AppointmentsRepository {
     return findAppointment || null; // ou retorna o valor de findAppointment, ou volta nulo
   }
 
-  public create(provider: string, date: Date): Appointment {
+  public create({ provider, date }: CreateAppointmentDTO): Appointment {
     // public permite que seja acessível fora da classe AppointmentsRepository
     // criar metodos no TS é recomendável que você coloque o retorno que você quer ter (passar o mouse no returno e vê)
-    const appointment = new Appointment(provider, date);
+    const appointment = new Appointment({ provider, date });
 
     this.appointments.push(appointment);
 
