@@ -1,5 +1,6 @@
 import { isEqual } from "date-fns";
 import Appointment from "../models/Appointment"
+import appointmentsRouter from "../routes/appointments.routes";
 
 class AppointmentsRepository {
   private appointments: Appointment[];
@@ -8,6 +9,10 @@ class AppointmentsRepository {
 
   constructor() {
     this.appointments = [];
+  }
+
+  public all(): Appointment[] {
+    return this.appointments;
   }
 
   public findByDate(date: Date): Appointment | null {
